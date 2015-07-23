@@ -26,7 +26,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+    [self test];
     
+    
+    
+    return YES;
+}
+
+-(void)test
+{
     // Setting up window for testing on it's root controllers view
     
     self.window = [UIWindow new];
@@ -69,6 +77,8 @@
     [buttonLongPress addTarget:self action:@selector(longPressHandler:) forControlEvents:UIControlEventTouchUpInside];
     [viewController.view addSubview:buttonLongPress];
     
+    buttonPan.enabled = false;          //not implemented yet
+    buttonSwipe.enabled = false;        //not implemented yet
     buttonRotation.enabled = false;     //not implemented yet
     buttonLongPress.enabled = false;    //not implemented yet
     
@@ -94,9 +104,6 @@
     infoLabel.textAlignment = NSTextAlignmentCenter;
     infoLabel.alpha = .4;
     [viewController.view addSubview:infoLabel];
-    
-    
-    return YES;
 }
 
 
@@ -107,22 +114,26 @@
  *
  ---------------------------------*/
 
+NSString *s;
 -(void)tapHandler:(UIButton*)sender
 {
     if(! [sender isSelected]) {
         sender.selected = true;
         
         __block AppDelegate *_self = self;
-        [self.window.rootViewController.view addTapGestureRecognizer:^(UITapGestureRecognizer *recognizer) {
+        [self.window.rootViewController.view addTapGestureRecognizer:^(UITapGestureRecognizer *recognizer, NSString *gestureId) {
             [_self updateText:@"Tap"];
         }];
+        
+        [self.window.rootViewController.view addTapGestureRecognizer:^(UITapGestureRecognizer *recognizer, NSString *gestureId) {
+            [_self updateText:@"Double Tap"];
+        } numberOfTapsRequired:2 numberOfTouchesRequired:1];
         
         
     } else {
         sender.selected = false;
         
-        [self.window.rootViewController.view removeTapGestureRecognizer];
-        
+        [self.window.rootViewController.view removeAllTapGestures];
     }
 }
 
@@ -132,51 +143,23 @@
         sender.selected = true;
         
         __block AppDelegate *_self = self;
-        [self.window.rootViewController.view addPinchGestureRecognizer:^(UIPinchGestureRecognizer *recognizer) {
+        [self.window.rootViewController.view addPinchGestureRecognizer:^(UIPinchGestureRecognizer *recognizer, NSString *gestureId) {
             [_self updateText:@"Pinch"];
         }];
         
     } else {
         sender.selected = false;
         
-        [self.window.rootViewController.view removePinchGestureRecognizer];
-        
+        [self.window.rootViewController.view removeAllPinchGestures];
     }
 }
 
 -(void)panHandler:(UIButton*)sender
 {
-    if(! [sender isSelected]) {
-        sender.selected = true;
-        
-        __block AppDelegate *_self = self;
-        [self.window.rootViewController.view addPanGestureRecognizer:^(UIPanGestureRecognizer *recognizer) {
-            [_self updateText:@"Pan"];
-        }];
-        
-    } else {
-        sender.selected = false;
-        
-        [self.window.rootViewController.view removePanGestureRecognizer];
-    }
 }
 
 -(void)swipeHandler:(UIButton*)sender
 {
-    if(! [sender isSelected]) {
-        sender.selected = true;
-        
-        __block AppDelegate *_self = self;
-        [self.window.rootViewController.view addSwipeGestureRecognizerLeftRight:^(UISwipeGestureRecognizer *recognizer) {
-            [_self updateText:@"Swipe Left/Right"];
-        }];
-        
-    } else {
-        sender.selected = false;
-        
-        [self.window.rootViewController.view removeSwipeGestureRecognizer];
-        
-    }
 }
 
 -(void)rotationHandler:(UIButton*)sender
