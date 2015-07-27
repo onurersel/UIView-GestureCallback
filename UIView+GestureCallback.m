@@ -193,7 +193,79 @@ const NSString *UIView_GestureCallback_gestureKeysHashKey = @"UIView_GestureCall
 #pragma mark - ##### PAN
 
 
+#pragma mark add pan gestures
 
+-(NSString*)addPanGestureRecognizer:(void(^)(UIPanGestureRecognizer* recognizer, NSString* gestureId))panCallback
+{
+    return [self addPanGestureRecognizer:panCallback minimumNumberOfTouches:1 maximumNumberOfTouches:NSUIntegerMax];
+}
+-(NSString*)addPanGestureRecognizer:(void(^)(UIPanGestureRecognizer* recognizer, NSString* gestureId))panCallback  minimumNumberOfTouches:(NSUInteger)minimumNumberOfTouches  maximumNumberOfTouches:(NSUInteger)maximumNumberOfTouches
+{
+    NSString *rand;
+    do {
+        rand = [self randomStringWithLength:12];
+    } while ([self.gestures objectForKey:rand] != nil);
+    
+    [self addPanGestureRecognizer:panCallback panGestureId:rand minimumNumberOfTouches:minimumNumberOfTouches maximumNumberOfTouches:maximumNumberOfTouches];
+    return rand;
+}
+
+-(void)addPanGestureRecognizer:(void(^)(UIPanGestureRecognizer* recognizer, NSString* gestureId))panCallback  panGestureId:(NSString*)panGestureId  minimumNumberOfTouches:(NSUInteger)minimumNumberOfTouches  maximumNumberOfTouches:(NSUInteger)maximumNumberOfTouches
+{
+    UIGestureRecognizer *r = [self.gestures objectForKey:panGestureId];
+    if (r != nil) {
+        [self removePanGesture:panGestureId];
+    }
+    
+    UIPanGestureRecognizer *tg = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panHandler:)];
+    tg.minimumNumberOfTouches = minimumNumberOfTouches;
+    tg.maximumNumberOfTouches = maximumNumberOfTouches;
+    
+    GestureCallbackValues *v = [GestureCallbackValues new];
+    v.gesture = tg;
+    v.panCallback = panCallback;
+    v.gestureId = panGestureId;
+    
+    [self.gestureKeysHash setValue:v forKey:[NSString stringWithFormat:@"%lu", (unsigned long)v.gesture.hash]];
+    [self.gestures setValue:v forKey:panGestureId];
+    [self addGestureRecognizer:tg];
+}
+
+
+#pragma mark remove pan gestures
+
+-(void)removePanGesture:(NSString*)panGestureId
+{
+    GestureCallbackValues *v = [self.gestures objectForKey:panGestureId];
+    if (v != nil) {
+        [self.gestures removeObjectForKey:panGestureId];
+        [self.gestureKeysHash removeObjectForKey:[NSString stringWithFormat:@"%lu", (unsigned long)v.gesture.hash]];
+        [self removeGestureRecognizer:v.gesture];
+    }
+}
+
+-(void)removeAllPanGestures
+{
+    NSArray *arr = self.gestures.allValues;
+    for (GestureCallbackValues *v in arr) {
+        if ([v.gesture isMemberOfClass:[UIPanGestureRecognizer class]]) {
+            [self removePanGesture:v.gestureId];
+        }
+    }
+}
+
+#pragma mark pan handler
+
+-(void)panHandler:(UIPanGestureRecognizer*)recognizer
+{
+    GestureCallbackValues *v = [self.gestureKeysHash objectForKey:[NSString stringWithFormat:@"%lu", (unsigned long)recognizer.hash]];
+    
+    if (v != nil) {
+        if (v.panCallback != nil) {
+            v.panCallback((UIPanGestureRecognizer*)v.gesture, v.gestureId);
+        }
+    }
+}
 
 
 
@@ -201,7 +273,78 @@ const NSString *UIView_GestureCallback_gestureKeysHashKey = @"UIView_GestureCall
 
 #pragma mark - ##### SWIPE
 
+-(NSString*)addSwipeGestureRecognizer:(void(^)(UISwipeGestureRecognizer* recognizer, NSString* gestureId))swipeCallback  direction:(UISwipeGestureRecognizerDirection)direction
+{
+    return [self addSwipeGestureRecognizer:swipeCallback direction:direction numberOfTouchesRequired:1];
+}
 
+-(NSString*)addSwipeGestureRecognizer:(void(^)(UISwipeGestureRecognizer* recognizer, NSString* gestureId))swipeCallback  direction:(UISwipeGestureRecognizerDirection)direction  numberOfTouchesRequired:(NSUInteger)numberOfTouchesRequired
+{
+    NSString *rand;
+    do {
+        rand = [self randomStringWithLength:12];
+    } while ([self.gestures objectForKey:rand] != nil);
+    
+    [self addSwipeGestureRecognizer:swipeCallback swipeGestureId:rand direction:direction numberOfTouchesRequired:numberOfTouchesRequired];
+    return rand;
+}
+
+-(void)addSwipeGestureRecognizer:(void(^)(UISwipeGestureRecognizer* recognizer, NSString* gestureId))swipeCallback  swipeGestureId:(NSString*)swipeGestureId    direction:(UISwipeGestureRecognizerDirection)direction   numberOfTouchesRequired:(NSUInteger)numberOfTouchesRequired
+{
+    UIGestureRecognizer *r = [self.gestures objectForKey:swipeGestureId];
+    if (r != nil) {
+        [self removeSwipeGesture:swipeGestureId];
+    }
+    
+    UISwipeGestureRecognizer *tg = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandler:)];
+    tg.direction = direction;
+    tg.numberOfTouchesRequired = numberOfTouchesRequired;
+    
+    GestureCallbackValues *v = [GestureCallbackValues new];
+    v.gesture = tg;
+    v.swipeCallback = swipeCallback;
+    v.gestureId = swipeGestureId;
+    
+    [self.gestureKeysHash setValue:v forKey:[NSString stringWithFormat:@"%lu", (unsigned long)v.gesture.hash]];
+    [self.gestures setValue:v forKey:swipeGestureId];
+    [self addGestureRecognizer:tg];
+}
+
+
+#pragma mark remove swipe gestures
+
+-(void)removeSwipeGesture:(NSString*)swipeGestureId
+{
+    GestureCallbackValues *v = [self.gestures objectForKey:swipeGestureId];
+    if (v != nil) {
+        [self.gestures removeObjectForKey:swipeGestureId];
+        [self.gestureKeysHash removeObjectForKey:[NSString stringWithFormat:@"%lu", (unsigned long)v.gesture.hash]];
+        [self removeGestureRecognizer:v.gesture];
+    }
+}
+
+-(void)removeAllSwipeGestures
+{
+    NSArray *arr = self.gestures.allValues;
+    for (GestureCallbackValues *v in arr) {
+        if ([v.gesture isMemberOfClass:[UISwipeGestureRecognizer class]]) {
+            [self removeSwipeGesture:v.gestureId];
+        }
+    }
+}
+
+#pragma mark swipe handler
+
+-(void)swipeHandler:(UISwipeGestureRecognizer*)recognizer
+{
+    GestureCallbackValues *v = [self.gestureKeysHash objectForKey:[NSString stringWithFormat:@"%lu", (unsigned long)recognizer.hash]];
+    
+    if (v != nil) {
+        if (v.swipeCallback != nil) {
+            v.swipeCallback((UISwipeGestureRecognizer*)v.gesture, v.gestureId);
+        }
+    }
+}
 
 
 
@@ -264,8 +407,6 @@ const NSString *UIView_GestureCallback_gestureKeysHashKey = @"UIView_GestureCall
 }
 
 
-//TODO : UIPanGestureRecognizer
-//TODO : UISwipeGestureRecognizer
 //TODO : UIRotationGestureRecognizer
 //TODO : UILongPressGestureRecognizer
 //TODO : CustomGestureRecognizer

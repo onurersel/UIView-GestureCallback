@@ -63,7 +63,7 @@
     [viewController.view addSubview:buttonPan];
     
     UIButton *buttonSwipe = [UIButton buttonWithType:UIButtonTypeSystem];
-    [buttonSwipe setTitle:@"Swipe L/R Gesture" forState:UIControlStateNormal];
+    [buttonSwipe setTitle:@"Swipe Gesture" forState:UIControlStateNormal];
     [buttonSwipe addTarget:self action:@selector(swipeHandler:) forControlEvents:UIControlEventTouchUpInside];
     [viewController.view addSubview:buttonSwipe];
     
@@ -77,8 +77,6 @@
     [buttonLongPress addTarget:self action:@selector(longPressHandler:) forControlEvents:UIControlEventTouchUpInside];
     [viewController.view addSubview:buttonLongPress];
     
-    buttonPan.enabled = false;          //not implemented yet
-    buttonSwipe.enabled = false;        //not implemented yet
     buttonRotation.enabled = false;     //not implemented yet
     buttonLongPress.enabled = false;    //not implemented yet
     
@@ -156,10 +154,51 @@ NSString *s;
 
 -(void)panHandler:(UIButton*)sender
 {
+    if(! [sender isSelected]) {
+        sender.selected = true;
+        
+        __block AppDelegate *_self = self;
+        [self.window.rootViewController.view addPanGestureRecognizer:^(UIPanGestureRecognizer *recognizer, NSString *gestureId) {
+            [_self updateText:@"Pan Double"];
+        } minimumNumberOfTouches:2 maximumNumberOfTouches:NSUIntegerMax];
+        [self.window.rootViewController.view addPanGestureRecognizer:^(UIPanGestureRecognizer *recognizer, NSString *gestureId) {
+            [_self updateText:@"Pan"];
+        } minimumNumberOfTouches:1 maximumNumberOfTouches:1];
+        
+    } else {
+        sender.selected = false;
+        
+        [self.window.rootViewController.view removeAllPanGestures];
+    }
 }
 
 -(void)swipeHandler:(UIButton*)sender
 {
+    if(! [sender isSelected]) {
+        sender.selected = true;
+        
+        __block AppDelegate *_self = self;
+        [self.window.rootViewController.view addSwipeGestureRecognizer:^(UISwipeGestureRecognizer *recognizer, NSString *gestureId) {
+            [_self updateText:@"Swipe Left"];
+        } direction:UISwipeGestureRecognizerDirectionLeft];
+        [self.window.rootViewController.view addSwipeGestureRecognizer:^(UISwipeGestureRecognizer *recognizer, NSString *gestureId) {
+            [_self updateText:@"Swipe Right"];
+        } direction:UISwipeGestureRecognizerDirectionRight];
+        [self.window.rootViewController.view addSwipeGestureRecognizer:^(UISwipeGestureRecognizer *recognizer, NSString *gestureId) {
+            [_self updateText:@"Swipe Up or Down"];
+        } direction:UISwipeGestureRecognizerDirectionDown|UISwipeGestureRecognizerDirectionUp];
+        [self.window.rootViewController.view addSwipeGestureRecognizer:^(UISwipeGestureRecognizer *recognizer, NSString *gestureId) {
+            [_self updateText:@"Swipe Up or Down / Double"];
+        } direction:UISwipeGestureRecognizerDirectionDown|UISwipeGestureRecognizerDirectionUp numberOfTouchesRequired:2];
+        [self.window.rootViewController.view addSwipeGestureRecognizer:^(UISwipeGestureRecognizer *recognizer, NSString *gestureId) {
+            [_self updateText:@"Swipe Right or Left / Double"];
+        } direction:UISwipeGestureRecognizerDirectionRight|UISwipeGestureRecognizerDirectionLeft numberOfTouchesRequired:2];
+        
+    } else {
+        sender.selected = false;
+        
+        [self.window.rootViewController.view removeAllSwipeGestures];
+    }
 }
 
 -(void)rotationHandler:(UIButton*)sender
