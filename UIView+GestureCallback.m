@@ -13,7 +13,7 @@ const NSString *UIView_GestureCallback_gestureKeysHashKey = @"UIView_GestureCall
 
 
 @implementation GestureCallbackValues
-@synthesize tapCallback, pinchCallback, panCallback, swipeCallback;
+@synthesize tapCallback, pinchCallback, panCallback, swipeCallback, rotationCallback, longPressCallback;
 @synthesize gesture, gestureId;
 @end
 
@@ -350,6 +350,174 @@ const NSString *UIView_GestureCallback_gestureKeysHashKey = @"UIView_GestureCall
 
 
 
+#pragma mark - ##### ROTATION
+
+
+#pragma mark add rotation gestures
+
+-(NSString*)addRotationGestureRecognizer:(void(^)(UIRotationGestureRecognizer* recognizer, NSString* gestureId))rotationCallback
+{
+    NSString *rand;
+    do {
+        rand = [self randomStringWithLength:12];
+    } while ([self.gestures objectForKey:rand] != nil);
+    
+    [self addRotationGestureRecognizer:rotationCallback rotationGestureId:rand];
+    return rand;
+}
+
+-(void)addRotationGestureRecognizer:(void(^)(UIRotationGestureRecognizer* recognizer, NSString* gestureId))rotationCallback  rotationGestureId:(NSString*)rotationGestureId
+{
+    UIGestureRecognizer *r = [self.gestures objectForKey:rotationGestureId];
+    if (r != nil) {
+        [self removeRotationGesture:rotationGestureId];
+    }
+    
+    UIRotationGestureRecognizer *tg = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotationHandler:)];
+    
+    GestureCallbackValues *v = [GestureCallbackValues new];
+    v.gesture = tg;
+    v.rotationCallback = rotationCallback;
+    v.gestureId = rotationGestureId;
+    
+    [self.gestureKeysHash setValue:v forKey:[NSString stringWithFormat:@"%lu", (unsigned long)v.gesture.hash]];
+    [self.gestures setValue:v forKey:rotationGestureId];
+    [self addGestureRecognizer:tg];
+}
+
+
+#pragma mark remove rotation gestures
+
+-(void)removeRotationGesture:(NSString*)rotationGestureId
+{
+    GestureCallbackValues *v = [self.gestures objectForKey:rotationGestureId];
+    if (v != nil) {
+        [self.gestures removeObjectForKey:rotationGestureId];
+        [self.gestureKeysHash removeObjectForKey:[NSString stringWithFormat:@"%lu", (unsigned long)v.gesture.hash]];
+        [self removeGestureRecognizer:v.gesture];
+    }
+}
+
+-(void)removeAllRotationGestures
+{
+    NSArray *arr = self.gestures.allValues;
+    for (GestureCallbackValues *v in arr) {
+        if ([v.gesture isMemberOfClass:[UIRotationGestureRecognizer class]]) {
+            [self removeRotationGesture:v.gestureId];
+        }
+    }
+}
+
+#pragma mark rotation handler
+
+-(void)rotationHandler:(UIRotationGestureRecognizer*)recognizer
+{
+    GestureCallbackValues *v = [self.gestureKeysHash objectForKey:[NSString stringWithFormat:@"%lu", (unsigned long)recognizer.hash]];
+    
+    if (v != nil) {
+        if (v.rotationCallback != nil) {
+            v.rotationCallback((UIRotationGestureRecognizer*)v.gesture, v.gestureId);
+        }
+    }
+}
+
+
+
+
+
+#pragma mark - ##### LONG PRESS
+
+#pragma mark add longPress gestures
+
+-(NSString*)addLongPressGestureRecognizer:(void(^)(UILongPressGestureRecognizer* recognizer, NSString* gestureId))longPressCallback
+{
+    return [self addLongPressGestureRecognizer:longPressCallback numberOfTapsRequired:0 numberOfTouchesRequired:1 minimumPressDuration:0.5 allowableMovement:10];
+}
+
+-(NSString*)addLongPressGestureRecognizer:(void(^)(UILongPressGestureRecognizer* recognizer, NSString* gestureId))longPressCallback
+                     numberOfTapsRequired:(NSUInteger)numberOfTapsRequired
+                  numberOfTouchesRequired:(NSUInteger)numberOfTouchesRequired
+                     minimumPressDuration:(CFTimeInterval)minimumPressDuration
+                        allowableMovement:(CGFloat)allowableMovement
+{
+    NSString *rand;
+    do {
+        rand = [self randomStringWithLength:12];
+    } while ([self.gestures objectForKey:rand] != nil);
+    
+    [self addLongPressGestureRecognizer:longPressCallback longPressGestureId:rand numberOfTapsRequired:numberOfTapsRequired numberOfTouchesRequired:numberOfTouchesRequired minimumPressDuration:minimumPressDuration allowableMovement:allowableMovement];
+    return rand;
+}
+
+-(void)addLongPressGestureRecognizer:(void(^)(UILongPressGestureRecognizer* recognizer, NSString* gestureId))longPressCallback
+                  longPressGestureId:(NSString*)longPressGestureId
+                numberOfTapsRequired:(NSUInteger)numberOfTapsRequired
+             numberOfTouchesRequired:(NSUInteger)numberOfTouchesRequired
+                minimumPressDuration:(CFTimeInterval)minimumPressDuration
+                   allowableMovement:(CGFloat)allowableMovement
+{
+    UIGestureRecognizer *r = [self.gestures objectForKey:longPressGestureId];
+    if (r != nil) {
+        [self removeLongPressGesture:longPressGestureId];
+    }
+    
+    UILongPressGestureRecognizer *tg = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressHandler:)];
+    tg.numberOfTapsRequired = numberOfTapsRequired;
+    tg.numberOfTouchesRequired = numberOfTouchesRequired;
+    tg.minimumPressDuration = minimumPressDuration;
+    tg.allowableMovement = allowableMovement;
+    
+    GestureCallbackValues *v = [GestureCallbackValues new];
+    v.gesture = tg;
+    v.longPressCallback = longPressCallback;
+    v.gestureId = longPressGestureId;
+    
+    [self.gestureKeysHash setValue:v forKey:[NSString stringWithFormat:@"%lu", (unsigned long)v.gesture.hash]];
+    [self.gestures setValue:v forKey:longPressGestureId];
+    [self addGestureRecognizer:tg];
+}
+
+
+#pragma mark remove longPress gestures
+
+-(void)removeLongPressGesture:(NSString*)longPressGestureId
+{
+    GestureCallbackValues *v = [self.gestures objectForKey:longPressGestureId];
+    if (v != nil) {
+        [self.gestures removeObjectForKey:longPressGestureId];
+        [self.gestureKeysHash removeObjectForKey:[NSString stringWithFormat:@"%lu", (unsigned long)v.gesture.hash]];
+        [self removeGestureRecognizer:v.gesture];
+    }
+}
+
+-(void)removeAllLongPressGestures
+{
+    NSArray *arr = self.gestures.allValues;
+    for (GestureCallbackValues *v in arr) {
+        if ([v.gesture isMemberOfClass:[UILongPressGestureRecognizer class]]) {
+            [self removeLongPressGesture:v.gestureId];
+        }
+    }
+}
+
+#pragma mark longPress handler
+
+-(void)longPressHandler:(UILongPressGestureRecognizer*)recognizer
+{
+    GestureCallbackValues *v = [self.gestureKeysHash objectForKey:[NSString stringWithFormat:@"%lu", (unsigned long)recognizer.hash]];
+    
+    if (v != nil) {
+        if (v.longPressCallback != nil) {
+            v.longPressCallback((UILongPressGestureRecognizer*)v.gesture, v.gestureId);
+        }
+    }
+}
+
+
+
+
+
+
 #pragma mark - random string
 
 /*----------------------------------
@@ -407,8 +575,6 @@ const NSString *UIView_GestureCallback_gestureKeysHashKey = @"UIView_GestureCall
 }
 
 
-//TODO : UIRotationGestureRecognizer
-//TODO : UILongPressGestureRecognizer
 //TODO : CustomGestureRecognizer
 
 

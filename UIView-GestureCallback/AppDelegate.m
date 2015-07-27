@@ -77,9 +77,6 @@
     [buttonLongPress addTarget:self action:@selector(longPressHandler:) forControlEvents:UIControlEventTouchUpInside];
     [viewController.view addSubview:buttonLongPress];
     
-    buttonRotation.enabled = false;     //not implemented yet
-    buttonLongPress.enabled = false;    //not implemented yet
-    
     
     // Position control buttons
     
@@ -101,6 +98,7 @@
     infoLabel.text = @"----";
     infoLabel.textAlignment = NSTextAlignmentCenter;
     infoLabel.alpha = .4;
+    infoLabel.numberOfLines = 3;
     [viewController.view addSubview:infoLabel];
 }
 
@@ -203,10 +201,40 @@ NSString *s;
 
 -(void)rotationHandler:(UIButton*)sender
 {
+    if(! [sender isSelected]) {
+        sender.selected = true;
+        
+        __block AppDelegate *_self = self;
+        [self.window.rootViewController.view addRotationGestureRecognizer:^(UIRotationGestureRecognizer *recognizer, NSString *gestureId) {
+            [_self updateText:[NSString stringWithFormat:@"Rotate\nvelocity:%f\nrotation:%f", recognizer.velocity, recognizer.rotation]];
+        }];
+        
+    } else {
+        sender.selected = false;
+        
+        [self.window.rootViewController.view removeAllRotationGestures];
+    }
 }
 
 -(void)longPressHandler:(UIButton*)sender
 {
+    if(! [sender isSelected]) {
+        sender.selected = true;
+        
+        __block AppDelegate *_self = self;
+        [self.window.rootViewController.view addLongPressGestureRecognizer:^(UILongPressGestureRecognizer *recognizer, NSString *gestureId) {
+            [_self updateText:@"Long Press"];
+        }];
+        [self.window.rootViewController.view addLongPressGestureRecognizer:^(UILongPressGestureRecognizer *recognizer, NSString *gestureId) {
+            [_self updateText:@"Long Double Touch Press"];
+        } numberOfTapsRequired:0 numberOfTouchesRequired:2 minimumPressDuration:0.5 allowableMovement:10];
+        
+        
+    } else {
+        sender.selected = false;
+        
+        [self.window.rootViewController.view removeAllLongPressGestures];
+    }
 }
 
 

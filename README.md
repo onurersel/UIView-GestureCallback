@@ -21,7 +21,5 @@ Category of block wrappers for UIGestureRecognizers
 ```
 
 ### Todo
-- wrapper for UIRotationGestureRecognizer
-- wrapper for UILongPressGestureRecognizer
 - wrapper for custom gesture recognizers
 - tests for GestureCallbackValues storage logic
