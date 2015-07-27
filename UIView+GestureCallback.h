@@ -37,6 +37,7 @@
 -(void)addTapGestureRecognizer:(void(^)(UITapGestureRecognizer* recognizer, NSString* gestureId))tapCallback  tapGestureId:(NSString*)tapGestureId  numberOfTapsRequired:(NSUInteger)numberOfTapsRequired  numberOfTouchesRequired:(NSUInteger)numberOfTouchesRequired;
 -(void)removeTapGesture:(NSString*)tapGestureId;
 -(void)removeAllTapGestures;
+-(void)tapHandler:(UITapGestureRecognizer*)recognizer;
 
 
 // pinch

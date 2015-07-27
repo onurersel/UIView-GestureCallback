@@ -11,7 +11,18 @@
 		951E9B8E1B60D23400039BB0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 951E9B8D1B60D23400039BB0 /* AppDelegate.m */; };
 		951E9BB01B60D40100039BB0 /* UIView+GestureCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 951E9BAF1B60D40100039BB0 /* UIView+GestureCallback.m */; };
 		951E9BB21B60D80200039BB0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 951E9BB11B60D80200039BB0 /* Images.xcassets */; };
+		9540CF761B665CDD0078CD63 /* UIView_GestureCallback_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9540CF751B665CDD0078CD63 /* UIView_GestureCallback_Tests.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9540CF771B665CDD0078CD63 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 951E9B7D1B60D23400039BB0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 951E9B841B60D23400039BB0;
+			remoteInfo = "UIView-GestureCallback";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		951E9B851B60D23400039BB0 /* UIView-GestureCallback.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UIView-GestureCallback.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -22,10 +33,20 @@
 		951E9BAE1B60D40100039BB0 /* UIView+GestureCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+GestureCallback.h"; sourceTree = "<group>"; };
 		951E9BAF1B60D40100039BB0 /* UIView+GestureCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GestureCallback.m"; sourceTree = "<group>"; };
 		951E9BB11B60D80200039BB0 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9540CF711B665CDD0078CD63 /* UIView-GestureCallback Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UIView-GestureCallback Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9540CF741B665CDD0078CD63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9540CF751B665CDD0078CD63 /* UIView_GestureCallback_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIView_GestureCallback_Tests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		951E9B821B60D23400039BB0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9540CF6E1B665CDD0078CD63 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -39,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				951E9B871B60D23400039BB0 /* UIView-GestureCallback */,
+				9540CF721B665CDD0078CD63 /* UIView-GestureCallback Tests */,
 				951E9B861B60D23400039BB0 /* Products */,
 				951E9BAE1B60D40100039BB0 /* UIView+GestureCallback.h */,
 				951E9BAF1B60D40100039BB0 /* UIView+GestureCallback.m */,
@@ -49,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				951E9B851B60D23400039BB0 /* UIView-GestureCallback.app */,
+				9540CF711B665CDD0078CD63 /* UIView-GestureCallback Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -73,6 +96,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		9540CF721B665CDD0078CD63 /* UIView-GestureCallback Tests */ = {
+			isa = PBXGroup;
+			children = (
+				9540CF751B665CDD0078CD63 /* UIView_GestureCallback_Tests.m */,
+				9540CF731B665CDD0078CD63 /* Supporting Files */,
+			);
+			path = "UIView-GestureCallback Tests";
+			sourceTree = "<group>";
+		};
+		9540CF731B665CDD0078CD63 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9540CF741B665CDD0078CD63 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -93,6 +133,24 @@
 			productReference = 951E9B851B60D23400039BB0 /* UIView-GestureCallback.app */;
 			productType = "com.apple.product-type.application";
 		};
+		9540CF701B665CDD0078CD63 /* UIView-GestureCallback Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9540CF7B1B665CDD0078CD63 /* Build configuration list for PBXNativeTarget "UIView-GestureCallback Tests" */;
+			buildPhases = (
+				9540CF6D1B665CDD0078CD63 /* Sources */,
+				9540CF6E1B665CDD0078CD63 /* Frameworks */,
+				9540CF6F1B665CDD0078CD63 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9540CF781B665CDD0078CD63 /* PBXTargetDependency */,
+			);
+			name = "UIView-GestureCallback Tests";
+			productName = "UIView-GestureCallback Tests";
+			productReference = 9540CF711B665CDD0078CD63 /* UIView-GestureCallback Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -104,6 +162,10 @@
 				TargetAttributes = {
 					951E9B841B60D23400039BB0 = {
 						CreatedOnToolsVersion = 6.4;
+					};
+					9540CF701B665CDD0078CD63 = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = 951E9B841B60D23400039BB0;
 					};
 				};
 			};
@@ -121,6 +183,7 @@
 			projectRoot = "";
 			targets = (
 				951E9B841B60D23400039BB0 /* UIView-GestureCallback */,
+				9540CF701B665CDD0078CD63 /* UIView-GestureCallback Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -131,6 +194,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				951E9BB21B60D80200039BB0 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9540CF6F1B665CDD0078CD63 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,7 +217,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9540CF6D1B665CDD0078CD63 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9540CF761B665CDD0078CD63 /* UIView_GestureCallback_Tests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9540CF781B665CDD0078CD63 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 951E9B841B60D23400039BB0 /* UIView-GestureCallback */;
+			targetProxy = 9540CF771B665CDD0078CD63 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		951E9BA61B60D23400039BB0 /* Debug */ = {
@@ -256,6 +342,40 @@
 			};
 			name = Release;
 		};
+		9540CF791B665CDD0078CD63 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "UIView-GestureCallback Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UIView-GestureCallback.app/UIView-GestureCallback";
+			};
+			name = Debug;
+		};
+		9540CF7A1B665CDD0078CD63 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "UIView-GestureCallback Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UIView-GestureCallback.app/UIView-GestureCallback";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -273,6 +393,15 @@
 			buildConfigurations = (
 				951E9BA91B60D23400039BB0 /* Debug */,
 				951E9BAA1B60D23400039BB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9540CF7B1B665CDD0078CD63 /* Build configuration list for PBXNativeTarget "UIView-GestureCallback Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9540CF791B665CDD0078CD63 /* Debug */,
+				9540CF7A1B665CDD0078CD63 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
