@@ -5,7 +5,7 @@ Category of block wrappers for UIGestureRecognizers
 
 ### Installation
 
-Copy UIView-GestureCallback.h and UIView-GestureCallback.m files to your project. Or use Cocoapods
+Copy UIView-GestureCallback.h and UIView-GestureCallback.m files to your project. Or use CocoaPods
 
 	pod 'UIView-GestureCallback'
 
